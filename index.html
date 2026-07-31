@@ -5,6 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Miloš Magdelinić - Sajt koji vam donosi nove klijente</title>
 <meta name="description" content="Izrada sajtova za advokate, računovođe i slične struke. Gotovo za 3 dana, 300€ po sajtu. Pišite na WhatsApp.">
+<link rel="icon" type="image/svg+xml" href="logo.svg">
+<link rel="alternate icon" href="logo.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -142,10 +144,8 @@
     font-weight:700; font-size:1.02rem;
   }
   .logo-mark{
-    width:36px; height:36px; border-radius:10px;
-    background:var(--accent-grad);
-    display:flex; align-items:center; justify-content:center;
-    font-size:0.9rem; color:#fff; font-weight:700;
+    width:36px; height:36px; border-radius:50%;
+    display:block; flex:none;
   }
   .nav-links{display:flex; align-items:center; gap:28px;}
   .nav-links a:not(.nav-cta){
@@ -422,7 +422,7 @@
 
 <nav>
   <div class="nav-inner">
-    <div class="logo"><span class="logo-mark">MM</span> Miloš Magdelinić</div>
+    <div class="logo"><img src="logo.svg" alt="Miloš Magdelinić" class="logo-mark"> Miloš Magdelinić</div>
     <button class="burger" id="burger" aria-label="Meni"><span></span><span></span><span></span></button>
     <div class="nav-links" id="navLinks">
       <a href="#radovi">Radovi</a>
