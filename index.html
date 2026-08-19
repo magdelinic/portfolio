@@ -216,7 +216,7 @@
       <a href="#kontakt">Kontakt</a>
       <a href="#faq">FAQ</a>
     </nav>
-    <a href="https://wa.me/381631633237" target="_blank" rel="noopener" class="btn-wa">
+    <a data-cta="zaglavlje" href="https://wa.me/381631633237" target="_blank" rel="noopener" class="btn-wa">
       <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><rect x="2" y="3" width="16" height="11" rx="4" stroke="currentColor" stroke-width="1.6"></rect><polygon points="6,14 4,18 9,14" fill="currentColor"></polygon></svg>
       WhatsApp
     </a>
@@ -230,7 +230,7 @@
       <h1>Web rešenja za profesionalne usluge</h1>
       <p class="lead">Sajtovi za advokate, računovođe i slične struke koji vam donose nove klijente. Gotov sajt za 3-5 dana, brzo i pristupačno.</p>
       <div class="cta-row">
-        <a href="https://wa.me/381631633237" target="_blank" rel="noopener" class="btn-primary">
+        <a data-cta="hero" href="https://wa.me/381631633237" target="_blank" rel="noopener" class="btn-primary">
           <svg width="17" height="17" viewBox="0 0 20 20" fill="none"><rect x="2" y="3" width="16" height="11" rx="4" stroke="currentColor" stroke-width="1.6"></rect><polygon points="6,14 4,18 9,14" fill="currentColor"></polygon></svg>
           Pošaljite mi poruku na WhatsApp
         </a>
@@ -441,7 +441,7 @@
           <div><span>✓</span>Brzo učitavanje sajta</div>
           <div><span>✓</span>Besplatan hosting, bez mesečnih troškova</div>
         </div>
-        <a href="https://wa.me/381631633237" target="_blank" rel="noopener" class="btn-full">Pošaljite mi poruku na WhatsApp</a>
+        <a data-cta="cena" href="https://wa.me/381631633237" target="_blank" rel="noopener" class="btn-full">Pošaljite mi poruku na WhatsApp</a>
       </div>
     </div>
   </div>
@@ -453,7 +453,7 @@
       <div class="eyebrow" style="color:var(--accent-light)">Kontakt</div>
       <h2>Spremni da vaš biznis dobije sajt koji donosi klijente?</h2>
       <p style="font-size:16px;color:rgba(250,246,239,0.65);max-width:480px;margin:0 0 32px">Napišite mi par rečenica o svom poslu. Odgovaram isti dan. Ili pošaljite poruku direktno preko WhatsApp-a.</p>
-      <a href="https://wa.me/381631633237" target="_blank" rel="noopener" class="btn-primary" style="margin-bottom:36px">
+      <a data-cta="kontakt" href="https://wa.me/381631633237" target="_blank" rel="noopener" class="btn-primary" style="margin-bottom:36px">
         <svg width="17" height="17" viewBox="0 0 20 20" fill="none"><rect x="2" y="3" width="16" height="11" rx="4" stroke="currentColor" stroke-width="1.6"></rect><polygon points="6,14 4,18 9,14" fill="currentColor"></polygon></svg>
         Pošaljite mi poruku na WhatsApp
       </a>
@@ -513,7 +513,7 @@
 </section>
 
 <footer>
-  © 2026 Miloš Magdelinić. Izrada sajtova za lokalne biznise · <a href="mailto:contact@magdelinicdigital.com">contact@magdelinicdigital.com</a> · <a href="privatnost.html">Politika privatnosti</a>
+  © 2026 Miloš Magdelinić. Izrada sajtova za lokalne biznise · <a data-cta="podnozje" href="mailto:contact@magdelinicdigital.com">contact@magdelinicdigital.com</a> · <a href="privatnost.html">Politika privatnosti</a>
 </footer>
 
 <script>
@@ -614,6 +614,10 @@
     ].filter(Boolean).join('\n');
     var url = 'https://wa.me/381631633237?text=' + encodeURIComponent(lines);
 
+    if (window.mgTrack) {
+      window.mgTrack('forma_poslata', { mesto: 'kontakt', delatnost: business || '(nije uneto)' });
+    }
+
     setTimeout(function(){
       submitBtn.disabled = false;
       submitBtn.textContent = 'Pošaljite poruku';
@@ -639,6 +643,35 @@
       setTimeout(function(){ el.remove(); }, 500);
     }, 5000);
   } catch (e) {}
+})();
+</script>
+
+<!-- ===== Merenje kontakata (GA4) ===== -->
+<script>
+(function(){
+  // Salje dogadjaj u Google Analytics. Ako GA nije ucitan, tiho preskace.
+  window.mgTrack = function(naziv, podaci){
+    try {
+      if (typeof gtag === 'function') { gtag('event', naziv, podaci || {}); }
+    } catch (e) {}
+  };
+
+  // Jedan slusalac za sve kontakt linkove na stranici.
+  document.addEventListener('click', function(ev){
+    var a = ev.target.closest ? ev.target.closest('a[href]') : null;
+    if (!a) return;
+
+    var href = a.getAttribute('href') || '';
+    var mesto = a.getAttribute('data-cta') || 'nepoznato';
+
+    if (href.indexOf('wa.me') !== -1) {
+      window.mgTrack('whatsapp_klik', { mesto: mesto });
+    } else if (href.indexOf('tel:') === 0) {
+      window.mgTrack('telefon_klik', { mesto: mesto });
+    } else if (href.indexOf('mailto:') === 0) {
+      window.mgTrack('email_klik', { mesto: mesto });
+    }
+  }, true);
 })();
 </script>
 
